@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p{
+            color: green;
+        }   
+        .answers{
+            background-color: pink;
+        }
+        .questions{
+            background-color: red;
+        }
+        body{
+            width: 100%;
+            padding: 1rem;
+            margin: 0;
+        }
+        .main{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+        }
+        .make-array{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid rgb(214, 214, 214);
+        }
+        #make-array-btn{
+            border: none;
+            color: white;
+            background-color: grey;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 200ms ease-in-out;
+        }
+        #make-array-btn:hover{
+            color: green;
+            transition: 200ms ease-in-out;
+        }
+    </style>
+</head>
+<body>
+  <div class="main">
+    <form class="make-array">
+        
+            Array Size(max 1000,000):    
+            <input type="number" id="size" name="size" min="1" max="1000000" value="100"><br>
+            
+            Max element size(max 10,000,000):
+            <input type="number" id="max" name="max" min="1" max="1000000" value="1000"><br>
+            
+            is sorted:
+            <input type="checkbox" id="sorted" name="sorted" value="true">
+            
+            has duplicates:
+            <input type="checkbox" id="duplicates" name="duplicates" value="true">
+
+        
+        
+        <button type="submit" id="make-array-btn">create array</button>
+    </form>
+    <div class="current-array">
+        
+    </div>
+</div>
+</body>
+<script src="./main.js"></script>
+</html>
