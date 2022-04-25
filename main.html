@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap');
+        *{
+            font-family: 'Roboto', sans-serif;
+        }
         p{
             color: green;
         }   
@@ -16,7 +20,8 @@
             background-color: red;
         }
         body{
-            width: 100%;
+            overflow: hidden;
+            width: 90%;
             padding: 1rem;
             margin: 0;
         }
@@ -28,6 +33,7 @@
             flex-direction: column;
         }
         .make-array{
+            width: 90%;
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -49,12 +55,24 @@
             color: green;
             transition: 200ms ease-in-out;
         }
+        
+        .current-array{
+            width: 50%;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid rgb(214, 214, 214);
+            margin-top: 1rem;
+            overflow-y: scroll;
+            max-height: 20rem;
+        }
     </style>
 </head>
 <body>
   <div class="main">
+      
     <form class="make-array">
-        
+        <h2>Create Array</h2>
+
             Array Size(max 1000,000):    
             <input type="number" id="size" name="size" min="1" max="1000000" value="100"><br>
             
@@ -71,8 +89,14 @@
         
         <button type="submit" id="make-array-btn">create array</button>
     </form>
-    <div class="current-array">
-        
+    
+    <div class="current-array-container">
+        <table class="current-array" id="current-array">
+            <tr>
+                <th>index</th>
+                <th>value</th>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

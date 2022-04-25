@@ -101,13 +101,22 @@ const findFirstAndLastOccurance = function(arr, target){
     
     document.querySelector("#make-array-btn").addEventListener("click", (e)=>{
         e.preventDefault()
+        
+        let targetDiv = document.getElementById("current-array")
+        targetDiv.innerHTML = "";//empty the list
         let size = document.querySelector("#size").value;
         let max = document.querySelector("#max").value;
         let sorted = document.querySelector("#sorted").checked;
         let duplicate = document.querySelector("#duplicates").checked;
-        console.log(size, max,sorted, duplicate)
-        //let tempArr = makeRandomArray(100000, 1000000, true, false)
         
+
+
+        let tempArr = makeRandomArray(size, max, sorted, duplicate)
+        for(let i = 0; i < tempArr.length; i++){
+            let row = document.createElement("span").innerText =" - "+ i + " : " + tempArr[i] + " \n";
+            targetDiv.append(row);
+            
+        }
     })
 
 
