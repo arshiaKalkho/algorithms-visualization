@@ -87,7 +87,7 @@
     }
     
     
-
+    //selection sort
     const selectionSortSwapHelper = function(arr,x,y){
         
         let temp = arr[x]
@@ -97,8 +97,8 @@
     const selectionSort = function(origArr , size){
         let arr = origArr; 
         let minIndx;
-
-         for(let i = 0; i < size - 1; i++){
+        
+        for(let i = 0; i < size - 1; i++){
             minIndx = i
             for(let j = i; j < size; j++ ){
                 if(arr[j] < arr[minIndx])
@@ -116,12 +116,47 @@
 
 
 
+    let arr = [10,3,100,4,400,1,23,304,30]
+    //qucik sort
+    const qucikSortSwapHelper = function(arr,x,y){
+        
+        let temp = arr[x]
+        arr[x] = arr[y];
+        arr[y] = temp;
+    }
+    const qucikSortPartitionHelper = function(arr, low, high){
+        let pivot = arr[high]
+        let i = low - 1;
+
+        for(let j = low; j <= high -1; j++){
+            if(arr[j] < pivot){
+                i++;
+                qucikSortSwapHelper(arr,i,j)
+            }
+        }
+        qucikSortSwapHelper(arr, i+1,high);
+        return i+1;
+    }
+    //use a random(last in this case) element as pivot and arrange everything smaller on
+    //side and bigger on the other, keep changing pivot until list is sorted
+    const quickSort = function(origArr, low, high){
+        let arr = origArr;
+        if(low < high){
+            let pi = qucikSortPartitionHelper(arr, low, high);
+            quickSort(arr, low, pi -1);
+            quickSort(arr, pi+1, high);
+        }
+        return arr;
+    }
+
+    
 
 
 
 
 
 
+    
     
     
     //main program
@@ -239,7 +274,18 @@
                 
                 let targetDiv = document.querySelector(".result")
                 let fullResult = document.createElement('p')
-                fullResult.innerText =  ` Copy of Array sorted, time elapsed: ${resultTime}`
+                fullResult.innerText =  ` Copy of Array sorted using Selection Sort, time elapsed: ${resultTime}ms`
+                targetDiv.appendChild(fullResult)
+                break;
+            }
+            case "Quick-Sort":{
+                let startTime = performance.now();
+                quickSort(tempArr, 0 ,tempArr.length -1 )
+                let endTime = performance.now();
+                let resultTime = endTime - startTime;
+                let targetDiv = document.querySelector(".result")
+                let fullResult = document.createElement('p')
+                fullResult.innerText =  ` Copy of Array sorted using Quick Sort, time elapsed: ${resultTime}ms`
                 targetDiv.appendChild(fullResult)
                 break;
             }
