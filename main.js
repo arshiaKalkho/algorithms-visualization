@@ -64,6 +64,10 @@ const findFirstAndLastOccurance = function(arr, target){
     //console.log(makeRandomArray(100,1000, true, false))
     
     const linearSearch = function(arr, target){//O(n)
+        if(target === null)
+            return -1
+
+        
         for(let i = 0; i< arr.length; i++){
             if(arr[i] === target)
             return i
@@ -73,6 +77,9 @@ const findFirstAndLastOccurance = function(arr, target){
     
     
     const binarySearch = function(arr, target){//O(log(n))
+        if(target === null)
+            return -1
+        
         let left = 0 
         let right = arr.length - 1
         let middle = Math.round((arr.length - 1)/2)
@@ -92,6 +99,18 @@ const findFirstAndLastOccurance = function(arr, target){
         return -1
     }
     
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     //main program
@@ -133,6 +152,67 @@ const findFirstAndLastOccurance = function(arr, target){
         }
     })
 
+    document.querySelector("#calculate-btn").addEventListener("click", (e)=>{
+        e.preventDefault();
+        //clear all warnings and errors
+        let oldErr = document.querySelector(".error") 
+        oldErr?.remove();
+        let oldWarn = document.querySelector(".warning") 
+        oldWarn?.remove();
+
+        
+
+        let sorted = document.querySelector("#sorted").checked;
+
+
+
+        let searchTarget = parseInt(document.querySelector("#search-target").value)
+
+        let form = document.querySelector("#calculate")
+        if(tempArr.length === 0){
+           let err = document.createElement('p')
+           err.classList.add("error")
+           err.innerText = "array is empty"
+           form.appendChild(err)
+        }
+
+        let algorithm = document.querySelector("#alg-options").value
+        switch(algorithm){
+            case "Binary-Search":{
+                if(!sorted){//if not sorted binary search won't work
+                    let warn = document.createElement('p')
+                    warn.classList.add("warning")
+                    warn.innerText = "Binary search requires sorted array"
+                    form.appendChild(warn)
+                }
+                let startTime = performance.now();
+                let result = binarySearch(tempArr,searchTarget)
+                let endTime = performance.now();
+                let resultTime = endTime - startTime;
+                
+                let targetDiv = document.querySelector(".result")
+                let fullResult = document.createElement('p')
+                
+                if(result === -1)//if result not found
+                    fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime} `
+                else
+                    fullResult.innerText = `Result: ${result}, Time elapsed: ${resultTime} `
+                
+                targetDiv.appendChild(fullResult)
+                break;
+                
+            }
+            case "Linear-Search":{
+                let result = linearSearch(tempArr,searchTarget)
+                break;
+            }
+        
+    
+    
+        }
+            
+
+    })
 
 
     // console.time("Binary Search took")

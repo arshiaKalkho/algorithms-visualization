@@ -13,6 +13,12 @@
         p{
             color: green;
         }   
+        .error{
+            color: red;
+        }
+        .warning{
+            color: rgb(221, 221, 35);
+        }
         .answers{
             background-color: pink;
         }
@@ -24,6 +30,7 @@
             width: 90%;
             padding: 1rem;
             margin: 0;
+            background-color: rgb(157, 157, 191);
         }
         .main{
             width: 100%;
@@ -73,11 +80,20 @@
             
         }
         .calculate{
+            height: fit-content;
             margin-top: 1rem;
             width: 100%;
             border: 1px solid rgb(214, 214, 214);
             border-radius: 5px;
             padding: 1rem;
+        }
+        #calculate{
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-direction: column;
         }
         #calculate-btn:hover{
             color: green;
@@ -94,6 +110,30 @@
             border: 1px solid white;
             transition: 200ms ease-in-out;
             
+        }
+        #remove-results-btn:hover{
+            color: red;
+            transition: 200ms ease-in-out;
+            border: 1px solid red;
+        }
+        #remove-results-btn{
+            border: none;
+            color: white;
+            background-color: grey;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid white;
+            transition: 200ms ease-in-out;
+        }
+        .alg-result{
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: stretch;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgb(214, 214, 214);
         }
     </style>
 </head>
@@ -130,8 +170,20 @@
 </div>
 <div class="calculate">
     <form id="calculate">
-        <button id="calculate-btn">Calculate</button>
+        <select name="options" id="alg-options" class="alg-options">
+            <option value="Linear-Search">Linear Search</option>
+            <option value="Binary-Search">Binary Search</option>
+        </select>
+        <input type="number" id="search-target" placeholder="Target(if searching)">
+        <button type="submit" id="calculate-btn">Calculate</button>
+        <button id="remove-results-btn">Erase results</button>
     </form>
+    <div class="alg-result">
+        <h3>result</h3>
+        <div class="result">
+
+        </div>
+    </div>
 </div>
 </body>
 <script src="./main.js"></script>
