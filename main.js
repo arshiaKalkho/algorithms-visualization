@@ -102,8 +102,8 @@ const findFirstAndLastOccurance = function(arr, target){
     document.querySelector("#make-array-btn").addEventListener("click", (e)=>{
         e.preventDefault()
         
-        let targetDiv = document.getElementById("current-array")
-        targetDiv.innerHTML = "";//empty the list
+        let targetTable = document.getElementById("current-array")
+        targetTable.innerHTML = "";
         let size = document.querySelector("#size").value;
         let max = document.querySelector("#max").value;
         let sorted = document.querySelector("#sorted").checked;
@@ -112,10 +112,24 @@ const findFirstAndLastOccurance = function(arr, target){
 
 
         let tempArr = makeRandomArray(size, max, sorted, duplicate)
-        for(let i = 0; i < tempArr.length; i++){
-            let row = document.createElement("span").innerText =" - "+ i + " : " + tempArr[i] + " \n";
-            targetDiv.append(row);
+        
+        
+        for(let i = tempArr.length-1;  i >= 0  ; i--){
             
+            let row = targetTable.insertRow(0);
+            let index = row.insertCell(0);
+            let value = row.insertCell(1);
+            
+            
+            index.innerHTML = i;
+            value.innerHTML = " "+tempArr[i];
+            if(i === 0){//add table header
+                let row = targetTable.insertRow(0);
+                let index = row.insertCell(0);
+                let value = row.insertCell(1);
+                index.innerHTML = "-Index-";
+                value.innerHTML = "-Value-";
+            }
         }
     })
 

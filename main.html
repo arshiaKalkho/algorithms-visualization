@@ -20,7 +20,7 @@
             background-color: red;
         }
         body{
-            overflow: hidden;
+            overflow-x: hidden;
             width: 90%;
             padding: 1rem;
             margin: 0;
@@ -56,14 +56,18 @@
             transition: 200ms ease-in-out;
         }
         
+        .current-array-container{
+            overflow-y: scroll;
+            max-height: 20rem;
+        }
         .current-array{
-            width: 50%;
+            width: fit-content;
             padding: 1rem;
             border-radius: 5px;
             border: 1px solid rgb(214, 214, 214);
             margin-top: 1rem;
-            overflow-y: scroll;
-            max-height: 20rem;
+            
+
         }
     </style>
 </head>
@@ -73,11 +77,11 @@
     <form class="make-array">
         <h2>Create Array</h2>
 
-            Array Size(max 1000,000):    
-            <input type="number" id="size" name="size" min="1" max="1000000" value="100"><br>
+            Array Size(max 100,000):    
+            <input type="number" id="size" name="size" min="1" max="100000" value="100"><br>
             
-            Max element size(max 10,000,000):
-            <input type="number" id="max" name="max" min="1" max="1000000" value="1000"><br>
+            Max element size(max 1000,000):
+            <input type="number" id="max" name="max" min="1" max="100000" value="1000"><br>
             
             is sorted:
             <input type="checkbox" id="sorted" name="sorted" value="true">
@@ -91,11 +95,10 @@
     </form>
     
     <div class="current-array-container">
+        
         <table class="current-array" id="current-array">
-            <tr>
-                <th>index</th>
-                <th>value</th>
-            </tr>
+            
+            
         </table>
     </div>
 </div>
