@@ -139,20 +139,37 @@
     }
     //use a random(last in this case) element as pivot and arrange everything smaller on
     //side and bigger on the other, keep changing pivot until list is sorted
-    const quickSort = function(origArr, low, high){
-        let arr = origArr;
+    const quickSort = function(arr, low, high){
+        
         if(low < high){
             let pi = qucikSortPartitionHelper(arr, low, high);
             quickSort(arr, low, pi -1);
             quickSort(arr, pi+1, high);
         }
-        return arr;
+        
     }
 
-    
+    const sendError = function(text){
+        let form = document.querySelector("#calculate")
+        let err = document.createElement('p')
+        err.classList.add("error")
+        err.innerText = text
+        form.appendChild(err)
+    }
 
-
-
+    const sendWarning = function(text){
+        let form = document.querySelector("#calculate")
+        let warn = document.createElement('p')
+        warn.classList.add("warning")
+        warn.innerText = text
+        form.appendChild(warn)
+    }
+    const removeErrAndWarn = function(){
+        let oldErr = document.querySelector(".error") 
+        oldErr?.remove();
+        let oldWarn = document.querySelector(".warning") 
+        oldWarn?.remove();
+    }
 
 
 
@@ -199,37 +216,21 @@
     })
 
     document.querySelector("#calculate-btn").addEventListener("click", (e)=>{
-        e.preventDefault();
-        //clear all warnings and errors
-        let oldErr = document.querySelector(".error") 
-        oldErr?.remove();
-        let oldWarn = document.querySelector(".warning") 
-        oldWarn?.remove();
-
-        console.log(tempArr.length)
+        e.preventDefault();        
+        removeErrAndWarn()
 
         let sorted = document.querySelector("#sorted").checked;
-
-
-
         let searchTarget = parseInt(document.querySelector("#search-target").value)
-
-        let form = document.querySelector("#calculate")
         if(tempArr.length === 0){
-           let err = document.createElement('p')
-           err.classList.add("error")
-           err.innerText = "array is empty"
-           form.appendChild(err)
+           sendError("array is empty")
+            return
         }
 
         let algorithm = document.querySelector("#alg-options").value
         switch(algorithm){
             case "Binary-Search":{
                 if(!sorted){//if not sorted binary search won't work
-                    let warn = document.createElement('p')
-                    warn.classList.add("warning")
-                    warn.innerText = "Binary search requires sorted array"
-                    form.appendChild(warn)
+                    sendWarning("Binary search requires sorted array")
                 }
                 let startTime = performance.now();
                 let result = binarySearch(tempArr,searchTarget)
@@ -266,7 +267,10 @@
                 break;
             }
             case "Selection-Sort":{
-                
+                if(sorted){
+                    sendWarning("sorting a sorted array")
+                }
+
                 let startTime = performance.now();
                 selectionSort(tempArr,tempArr.length)
                 let endTime = performance.now();
@@ -279,14 +283,18 @@
                 break;
             }
             case "Quick-Sort":{
+                if(sorted){
+                    sendWarning("sorting a sorted array")
+                }
                 let startTime = performance.now();
                 quickSort(tempArr, 0 ,tempArr.length -1 )
                 let endTime = performance.now();
                 let resultTime = endTime - startTime;
                 let targetDiv = document.querySelector(".result")
                 let fullResult = document.createElement('p')
-                fullResult.innerText =  ` Copy of Array sorted using Quick Sort, time elapsed: ${resultTime}ms`
+                fullResult.innerText =  ` """Actuall""" Array sorted using Quick Sort, time elapsed: ${resultTime}ms`
                 targetDiv.appendChild(fullResult)
+                sendWarning("to avoid stack depth exceeding err, the actual array is sorted now please create a new one")
                 break;
             }
         
@@ -299,7 +307,7 @@
     //erase results
     document.querySelector("#remove-results-btn").addEventListener('click', (e)=>{
         e.preventDefault();
-
+        removeErrAndWarn()
         //empty previous result
         let prevResultDiv = document.querySelector(".result")
         prevResultDiv.innerHTML = "";
