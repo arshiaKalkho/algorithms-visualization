@@ -1,47 +1,34 @@
+
+
+
 //find the first and last occurance of a number in a sorted array
-
-
-
-
-const findFirstAndLastOccurance = function(arr, target){
-    let first = -1;
-    let last = -1;
-    let hi = arr.length - 1;
-    let low = 0;
-    
-    
-    while(true){
-        
-        if(arr[hi] === target && last === -1)
-            last = hi;
-        if(arr[low] === target && first === -1)
-            first = low;
-            
-            hi--;
-            low++;
-            
-            if(first != -1 && last != -1)
-            return [first,last]
-            
-            if(hi === 0 || low === arr.length - 1 || arr.length === 0)
-            return [first,last]
-        }
+    const findFirstAndLastOccurance = function(arr, target){
+        let first = -1;
+        let last = -1;
+        let hi = arr.length - 1;
+        let low = 0;
         
         
+        while(true){
+            
+            if(arr[hi] === target && last === -1)
+                last = hi;
+            if(arr[low] === target && first === -1)
+                first = low;
+                
+                hi--;
+                low++;
+                
+                if(first != -1 && last != -1)
+                return [first,last]
+                
+                if(hi === 0 || low === arr.length - 1 || arr.length === 0)
+                return [first,last]
+            }
+            
+            
     }
-    //console.log(func(arr, 5));
-    
-    
-    //given two sorted arrays combine them into one sorted array, arrays could be of different size
-    const func2 = function(arr1, arr2){
-        
-        
-        
-    }
-    
-    
-    
-    //console.log(func2([2,4,5,6,7,8,19], [2,7,8,89]));
+
     
     //setting max and duplicate to off will limit the number of elements in array
     const makeRandomArray = function(length, max,  sorted = true, duplicates = true){
@@ -99,7 +86,31 @@ const findFirstAndLastOccurance = function(arr, target){
         return -1
     }
     
+    
 
+    const selectionSortSwapHelper = function(arr,x,y){
+        
+        let temp = arr[x]
+        arr[x] = arr[y];
+        arr[y] = temp;
+    }
+    const selectionSort = function(origArr , size){
+        let arr = origArr; 
+        let minIndx;
+
+         for(let i = 0; i < size - 1; i++){
+            minIndx = i
+            for(let j = i; j < size; j++ ){
+                if(arr[j] < arr[minIndx])
+                    minIndx = j;
+            }
+
+            selectionSortSwapHelper(arr,minIndx,i);
+
+         }
+         return arr;
+    }
+    
 
 
 
@@ -219,6 +230,19 @@ const findFirstAndLastOccurance = function(arr, target){
                 targetDiv.appendChild(fullResult)
                 break;
             }
+            case "Selection-Sort":{
+                
+                let startTime = performance.now();
+                selectionSort(tempArr,tempArr.length)
+                let endTime = performance.now();
+                let resultTime = endTime - startTime;
+                
+                let targetDiv = document.querySelector(".result")
+                let fullResult = document.createElement('p')
+                fullResult.innerText =  ` Copy of Array sorted, time elapsed: ${resultTime}`
+                targetDiv.appendChild(fullResult)
+                break;
+            }
         
     
     
@@ -237,21 +261,6 @@ const findFirstAndLastOccurance = function(arr, target){
 
     })
 
-
-    // console.time("Binary Search took")
-    // console.log(binarySearch(tempArr, tempArr[90000]));
-    // console.timeEnd("Binary Search took")
-    
-    
-    
-    // console.time("Linear Search took")
-    // console.log(linearSearch(tempArr, tempArr[90000]));
-    // console.timeEnd("Linear Search took")
-
-
-
-    
-    
     
     
     
