@@ -160,7 +160,7 @@ const findFirstAndLastOccurance = function(arr, target){
         let oldWarn = document.querySelector(".warning") 
         oldWarn?.remove();
 
-        
+        console.log(tempArr.length)
 
         let sorted = document.querySelector("#sorted").checked;
 
@@ -196,14 +196,27 @@ const findFirstAndLastOccurance = function(arr, target){
                 if(result === -1)//if result not found
                     fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime} `
                 else
-                    fullResult.innerText = `Result: ${result}, Time elapsed: ${resultTime} `
+                    fullResult.innerText = `Alg: ${algorithm} Result: ${result}, Time elapsed: ${resultTime} `
                 
                 targetDiv.appendChild(fullResult)
                 break;
                 
             }
             case "Linear-Search":{
+                let startTime = performance.now();
                 let result = linearSearch(tempArr,searchTarget)
+                let endTime = performance.now();
+                let resultTime = endTime - startTime;
+                
+                let targetDiv = document.querySelector(".result")
+                let fullResult = document.createElement('p')
+                
+                if(result === -1)//if result not found
+                    fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime} `
+                else
+                    fullResult.innerText = `Alg: ${algorithm} Result: ${result}, Time elapsed: ${resultTime} `
+                
+                targetDiv.appendChild(fullResult)
                 break;
             }
         
@@ -211,6 +224,16 @@ const findFirstAndLastOccurance = function(arr, target){
     
         }
             
+
+    })
+    //erase results
+    document.querySelector("#remove-results-btn").addEventListener('click', (e)=>{
+        e.preventDefault();
+
+        //empty previous result
+        let prevResultDiv = document.querySelector(".result")
+        prevResultDiv.innerHTML = "";
+
 
     })
 

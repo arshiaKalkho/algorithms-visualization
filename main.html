@@ -131,6 +131,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
             width: stretch;
             padding: 0.5rem 1rem;
             border: 1px solid rgb(214, 214, 214);
@@ -138,8 +139,8 @@
     </style>
 </head>
 <body>
+    <p class="warning"> modern browsers memoize intensive functions calls, so if you keep using the same data and function then resulting time will be 0 </p>
   <div class="main">
-      
     <form class="make-array">
         <h2>Create Array</h2>
 
