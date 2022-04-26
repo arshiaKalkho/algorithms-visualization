@@ -48,7 +48,7 @@
     
         return array;
     }
-    //console.log(makeRandomArray(100,1000, true, false))
+   
     
     const linearSearch = function(arr, target){//O(n)
         if(target === null)
@@ -116,7 +116,7 @@
 
 
 
-    let arr = [10,3,100,4,400,1,23,304,30]
+    
     //qucik sort
     const qucikSortSwapHelper = function(arr,x,y){
         
@@ -241,9 +241,9 @@
                 let fullResult = document.createElement('p')
                 
                 if(result === -1)//if result not found
-                    fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime} `
+                    fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime}ms `
                 else
-                    fullResult.innerText = `Alg: ${algorithm} Result: ${result}, Time elapsed: ${resultTime} `
+                    fullResult.innerText = `Alg: ${algorithm} Result: ${result}, Time elapsed: ${resultTime}ms `
                 
                 targetDiv.appendChild(fullResult)
                 break;
@@ -259,9 +259,9 @@
                 let fullResult = document.createElement('p')
                 
                 if(result === -1)//if result not found
-                    fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime} `
+                    fullResult.innerText = `Alg: ${algorithm} Result: Not Found, Time elapsed: ${resultTime}ms `
                 else
-                    fullResult.innerText = `Alg: ${algorithm} Result: ${result}, Time elapsed: ${resultTime} `
+                    fullResult.innerText = `Alg: ${algorithm} Result: ${result}, Time elapsed: ${resultTime}ms `
                 
                 targetDiv.appendChild(fullResult)
                 break;
@@ -283,11 +283,13 @@
                 break;
             }
             case "Quick-Sort":{
+                
                 if(sorted){
                     sendWarning("sorting a sorted array")
                 }
                 let startTime = performance.now();
                 quickSort(tempArr, 0 ,tempArr.length -1 )
+                
                 let endTime = performance.now();
                 let resultTime = endTime - startTime;
                 let targetDiv = document.querySelector(".result")
@@ -304,6 +306,11 @@
             
 
     })
+
+
+    
+          
+    
     //erase results
     document.querySelector("#remove-results-btn").addEventListener('click', (e)=>{
         e.preventDefault();
