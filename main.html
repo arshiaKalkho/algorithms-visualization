@@ -30,7 +30,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            flex-direction: column;
+            flex-direction: row;
         }
         .make-array{
             width: 90%;
@@ -50,24 +50,50 @@
             border-radius: 5px;
             cursor: pointer;
             transition: 200ms ease-in-out;
+            border: 1px solid white;
         }
         #make-array-btn:hover{
             color: green;
             transition: 200ms ease-in-out;
+            border: 1px solid green;
         }
         
         .current-array-container{
             overflow-y: scroll;
+            overflow-x: hidden;
             max-height: 20rem;
         }
         .current-array{
             width: fit-content;
-            padding: 1rem;
+            padding: 1rem 2rem;
             border-radius: 5px;
             border: 1px solid rgb(214, 214, 214);
             margin-top: 1rem;
             
-
+            
+        }
+        .calculate{
+            margin-top: 1rem;
+            width: 100%;
+            border: 1px solid rgb(214, 214, 214);
+            border-radius: 5px;
+            padding: 1rem;
+        }
+        #calculate-btn:hover{
+            color: green;
+            transition: 200ms ease-in-out;
+            border: 1px solid green;
+        }
+        #calculate-btn{
+            border: none;
+            color: white;
+            background-color: grey;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid white;
+            transition: 200ms ease-in-out;
+            
         }
     </style>
 </head>
@@ -101,6 +127,11 @@
             
         </table>
     </div>
+</div>
+<div class="calculate">
+    <form id="calculate">
+        <button id="calculate-btn">Calculate</button>
+    </form>
 </div>
 </body>
 <script src="./main.js"></script>

@@ -94,8 +94,8 @@ const findFirstAndLastOccurance = function(arr, target){
     
     
     
-    
-    
+    //main program
+    let tempArr = [];
     
     
     
@@ -111,7 +111,7 @@ const findFirstAndLastOccurance = function(arr, target){
         
 
 
-        let tempArr = makeRandomArray(size, max, sorted, duplicate)
+        tempArr = makeRandomArray(size, max, sorted, duplicate)
         
         
         for(let i = tempArr.length-1;  i >= 0  ; i--){
