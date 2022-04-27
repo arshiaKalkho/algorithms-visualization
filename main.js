@@ -133,7 +133,26 @@
         }
     }
    
+    //insertion sort
+    const insertionSort = function(arr, size){//O(n^2)
+        let key;
+        for(let i = 1; i < size;i++){
+
+            key  = arr[i];
+            j = i - 1;
+
+            while(j >=0 && arr[j] > key){
+                arr[j+1] = arr[j];
+                j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+    }
     
+
+
+
+
     //qucik sort
     const qucikSortSwapHelper = function(arr,x,y){
         
@@ -299,6 +318,22 @@
                 let targetDiv = document.querySelector(".result")
                 let fullResult = document.createElement('p')
                 fullResult.innerText =  ` Copy of Array sorted using Selection Sort, time elapsed: ${resultTime}ms`
+                targetDiv.appendChild(fullResult)
+                break;
+            }
+            case "Insertion-Sort":{
+                if(sorted){
+                    sendWarning("sorting a sorted array")
+                }
+
+                let startTime = performance.now();
+                insertionSort(tempArr,tempArr.length)
+                let endTime = performance.now();
+                let resultTime = endTime - startTime;
+                
+                let targetDiv = document.querySelector(".result")
+                let fullResult = document.createElement('p')
+                fullResult.innerText =  ` Copy of Array sorted using Insertion Sort, time elapsed: ${resultTime}ms`
                 targetDiv.appendChild(fullResult)
                 break;
             }
