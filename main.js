@@ -49,7 +49,7 @@
         return array;
     }
    
-    
+    //linear search
     const linearSearch = function(arr, target){//O(n)
         if(target === null)
             return -1
@@ -62,7 +62,7 @@
         return -1;
     }
     
-    
+    //binary search
     const binarySearch = function(arr, target){//O(log(n))
         if(target === null)
             return -1
@@ -87,6 +87,11 @@
     }
     
     
+    
+    
+    
+    
+    
     //selection sort
     const selectionSortSwapHelper = function(arr,x,y){
         
@@ -94,7 +99,7 @@
         arr[x] = arr[y];
         arr[y] = temp;
     }
-    const selectionSort = function(origArr , size){
+    const selectionSort = function(origArr , size){//O(n^2)
         let arr = origArr; 
         let minIndx;
         
@@ -102,20 +107,32 @@
             minIndx = i
             for(let j = i; j < size; j++ ){
                 if(arr[j] < arr[minIndx])
-                    minIndx = j;
+                minIndx = j;
             }
-
+            
             selectionSortSwapHelper(arr,minIndx,i);
-
-         }
-         return arr;
+            
+        }
+        return arr;
     }
     
-
-
-
-
-
+    
+    
+    //bubble sort
+    const bubbleSortSwapHelper = function(arr,a,b){
+        let temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
+    const bubbleSort = function(arr, size){//O(n^2)
+        for(let i = 0; i < size; i++){
+            for(let j = 0; j < size - i - 1; j++){
+                if(arr[j] > arr[j+1])
+                    bubbleSortSwapHelper(arr, j,j+1)
+            }
+        }
+    }
+   
     
     //qucik sort
     const qucikSortSwapHelper = function(arr,x,y){
@@ -148,6 +165,9 @@
         }
         
     }
+
+
+
 
     const sendError = function(text){
         let form = document.querySelector("#calculate")
@@ -282,6 +302,22 @@
                 targetDiv.appendChild(fullResult)
                 break;
             }
+            case "Bubble-Sort":{
+                if(sorted){
+                    sendWarning("sorting a sorted array")
+                }
+                let startTime = performance.now();
+                bubbleSort(tempArr,tempArr.length -1 )
+                
+                let endTime = performance.now();
+                let resultTime = endTime - startTime;
+                let targetDiv = document.querySelector(".result")
+                let fullResult = document.createElement('p')
+                fullResult.innerText =  ` A copy of the Array sorted using Bubble Sort, time elapsed: ${resultTime}ms`
+                targetDiv.appendChild(fullResult)
+            
+                break;
+            }
             case "Quick-Sort":{
                 
                 if(sorted){
@@ -299,8 +335,8 @@
                 sendWarning("to avoid stack depth exceeding err, the actual array is sorted now please create a new one")
                 break;
             }
-        
-    
+            
+            
     
         }
             
