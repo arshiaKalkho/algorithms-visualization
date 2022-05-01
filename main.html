@@ -136,7 +136,7 @@
             padding: 0.5rem 1rem;
             border: 1px solid rgb(214, 214, 214);
         }
-        .visualize-bubble-sort{
+        .visualize-sort{
             width: 100%;
             height: 10rem;
             border: 1px solid rgb(214, 214, 214);
@@ -148,7 +148,7 @@
             justify-content: space-evenly;
             gap: 0;
         }
-        .visualize-bubble-sort-header{
+        .visualize-sort-header{
             text-align: center;
         }
         .visual-array-elements{
@@ -156,6 +156,49 @@
             border: 0 0 0 1px solid black;
             width: fill;
             background-color: white;
+        }
+        .visual-sort-form{
+            margin-top: 1rem;
+            border: 1px solid white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 1rem;
+            gap: 1rem;
+            border-radius: 5px;
+        }
+        #vis-calculate-btn:hover{
+            color: green;
+            transition: 200ms ease-in-out;
+            border: 1px solid green;
+        }
+        #vis-calculate-btn{
+
+            border: none;
+            color: white;
+            background-color: grey;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid white;
+            transition: 200ms ease-in-out;
+            
+        }
+        #vis-reset-result:hover{
+            color: red;
+            transition: 200ms ease-in-out;
+            border: 1px solid red;
+        }
+        #vis-reset-result{
+            border: none;
+            color: white;
+            background-color: grey;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid white;
+            transition: 200ms ease-in-out;
         }
         .red{
             background-color: red;
@@ -222,13 +265,21 @@
     <div class="alg-result">
         <h3>result</h3>
         <div class="result">
-
+            
         </div>
     </div>
 </div>
-<h2 class="visualize-bubble-sort-header">visualizing bubblesort with 200 random elements</h2>
-    <div id="vis-bubble-sort" class="visualize-bubble-sort">
+    <form  class="visual-sort-form">
+        <h2 class="visualize-sort-header">visualize sorting algorithms with 100 random elements</h2>
+        <select name="options" id="vis-alg-options" class="alg-options">
+            <option value="Bubble-sort">Bubble Sort</option>
+
+        </select>
     </div>
+    <button type="submit" id="vis-calculate-btn">Sort</button>
+    <button id="vis-reset-result">Reset</button>
+    </form>
+    <div class="visualize-sort" id="visualize-sort"></div>
 </body>
 <script type="module"  src="./main.js"></script>
 </html>

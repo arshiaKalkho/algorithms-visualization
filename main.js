@@ -91,6 +91,7 @@ class Helper{//DOM helper
     }
     //make dom elements and values as an array 
     const makeVisualizedArray = function(length = 200, max = 1000,  sorted = false, duplicates = false){
+        
         let array = new Array();
         let rand, el;
         for(let i = 0 ; i <= length - 1; i++){
@@ -118,7 +119,7 @@ class Helper{//DOM helper
     }
     //display array of visualized elements
     const displayArrayToTarget = function(arr,targetElement){
-        
+        targetElement.innerHTML = ""
         for(let i = 0; i < arr.length; i++ ){
             targetElement.appendChild(arr[i].element)
         }
@@ -162,7 +163,7 @@ class Helper{//DOM helper
     }
     
    
-    const visualBubbleSort =async function(arr, size, targetDivId){//O(n^2)
+    const visualBubbleSort =async function(size, targetDivId){//O(n^2)
         
         let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
         
@@ -563,7 +564,20 @@ class Helper{//DOM helper
     
     //visualizeBubbleSort
     let visualArr = makeVisualizedArray(100,1000,false,false)
-    let bubbleDiv = document.querySelector(".visualize-bubble-sort");
-    displayArrayToTarget(visualArr, bubbleDiv)
-    visualBubbleSort(visualArr,visualArr.length-1, "vis-bubble-sort")
+    let targetDiv = document.querySelector("#visualize-sort");
+    displayArrayToTarget(visualArr, targetDiv)
+   
+
+
+    document.querySelector("#vis-reset-result").addEventListener('click', (e)=>{//reset visual array
+        e.preventDefault()
+        visualArr = makeVisualizedArray(100,1000,false,false)
+        let targetDiv = document.querySelector(".visualize-sort");
+        displayArrayToTarget(visualArr, targetDiv)
+    })
+    document.querySelector("#vis-calculate-btn").addEventListener('click', (e)=>{
+        e.preventDefault()
+        visualBubbleSort(visualArr.length-1, "visualize-sort")
+
+    })
    
