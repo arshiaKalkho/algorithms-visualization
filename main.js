@@ -1,7 +1,48 @@
+class Helper{//DOM helper
+    static async addToClassList(list, nthChild,classToAdd){
+            // let target = document.getElementById(targetElId)
+            // let children = target.childNodes[nthChild]
+            // children.classList.add(classToAdd)
+            list.item(nthChild).classList.add(classToAdd)
+ 
+    }
+    static async removeFromClassList(list, nthChild, classToRemove){
+        //document.getElementById(targetElId).childNodes[nthChild].classList.remove(classToRemove)
+        list.item(nthChild).classList.remove(classToRemove)
+    }
+    static async isGreater(a, b){   
 
+        if(a.style.height > b.style.height)
+            return true     
+        return false
+    }
+    static async swap(a, b){
+        
+        let temp = a.style.height
+        a.style.height = b.style.height;
+        b.style.height = temp 
+        
+    }
+    static async checkSort(nodeList){
+        for(let i =0; i < nodeList.length-1;i++){
+            nodeList[i].classList.add("green")
+            await sleep(10)
+            if(nodeList[i].style.height > nodeList[i+1].style.height)
+                nodeList[i].classList.remove("green")
+                nodeList[i].classList.add("red")
+                nodeList[i+1].classList.add("red")
+        }
+                nodeList[nodeList.length-1].classList.remove("red")
+                nodeList[nodeList.length-1].classList.add("green")
+    }
+}
 
-
-//find the first and last occurance of a number in a sorted array
+    const sleep = function(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    
+    
+    //find the first and last occurance of a number in a sorted array
     const findFirstAndLastOccurance = function(arr, target){
         let first = -1;
         let last = -1;
@@ -48,19 +89,53 @@
     
         return array;
     }
-   
+    //make dom elements and values as an array 
+    const makeVisualizedArray = function(length = 200, max = 1000,  sorted = false, duplicates = false){
+        let array = new Array();
+        let rand, el;
+        for(let i = 0 ; i <= length - 1; i++){
+            rand = Math.random() *  max;
+            el = document.createElement('div')
+            el.classList = "visual-array-elements"
+            el.style.height =  `${rand/100}rem`
+            el.style.width =  '0.8%'
+            el.style.borderLeft = "1px solid black"
+            el.innerText = "ㅤ"//<<<<< invisible character in the middle of quotation marks on this line
+            array.push({
+                value:rand,
+                element:el
+            })
+        }
+        
+        if(sorted){
+            array.sort((a,b)=>a.value-b.value)
+        }
+        if(!duplicates){
+            array = [...new Set(array)]
+        }
+    
+        return array;
+    }
+    //display array of visualized elements
+    const displayArrayToTarget = function(arr,targetElement){
+        
+        for(let i = 0; i < arr.length; i++ ){
+            targetElement.appendChild(arr[i].element)
+        }
+    }    
     //linear search
     const linearSearch = function(arr, target){//O(n)
-        if(target === null)
+        if(target === null)// 1 
             return -1
 
         
-        for(let i = 0; i< arr.length; i++){
-            if(arr[i] === target)
-            return i
+        for(let i = 0; i< arr.length; i++){//1 + n + n
+            if(arr[i] === target)//n
+            return i//1
         }
-        return -1;
+        return -1;//1
     }
+    
     
     //binary search
     const binarySearch = function(arr, target){//O(log(n))
@@ -86,7 +161,33 @@
         return -1
     }
     
-    
+   
+    const visualBubbleSort =async function(arr, size, targetDivId){//O(n^2)
+        
+        let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
+        
+        
+        
+        
+        
+        
+        for(let i = 0; i < size; i++){// 1 n n 
+            for(let j = 0; j < size - i; j++){//n 4n^2
+                
+                await Helper.addToClassList(targetDiv,j,'red')
+                await Helper.addToClassList(targetDiv,j+1,'blue')
+                if(await Helper.isGreater(targetDiv[j],targetDiv[j+1]))//2n^2
+                {      
+                    await sleep(10)
+                    await Helper.swap(targetDiv[j+1],targetDiv[j])                   
+                }
+                    
+                await Helper.removeFromClassList(targetDiv,j, "red")
+                await Helper.removeFromClassList(targetDiv,j+1,'blue')
+                }     
+        }
+        Helper.checkSort(targetDiv)
+    }
     
     
     
@@ -125,17 +226,21 @@
         arr[b] = temp;
     }
     const bubbleSort = function(arr, size){//O(n^2)
-        for(let i = 0; i < size; i++){
-            for(let j = 0; j < size - i - 1; j++){
-                if(arr[j] > arr[j+1])
-                    bubbleSortSwapHelper(arr, j,j+1)
+        for(let i = 0; i < size; i++){// 1 n n 
+            for(let j = 0; j < size - i - 1; j++){//n 4n^2
+                if(arr[j] > arr[j+1])//2n^2
+                    bubbleSortSwapHelper(arr, j,j+1)//5n^2
             }
         }
+        return arr;
     }
-   
+
+    //O(n) = 1 + 2n + n + 4n^2 + 2n^2 + 5n^2
+   //O(n) = 11n^2 + 3n + 1
+   //O(n) = N^2
     //insertion sort
     const insertionSort = function(arr, size){//O(n^2)
-        let key;
+        let key, j;
         for(let i = 1; i < size;i++){
 
             key  = arr[i];
@@ -147,6 +252,7 @@
             }
             arr[j + 1] = key;
         }
+        
     }
     
 
@@ -455,6 +561,9 @@
     
     
     
-    
-    
-    
+    //visualizeBubbleSort
+    let visualArr = makeVisualizedArray(100,1000,false,false)
+    let bubbleDiv = document.querySelector(".visualize-bubble-sort");
+    displayArrayToTarget(visualArr, bubbleDiv)
+    visualBubbleSort(visualArr,visualArr.length-1, "vis-bubble-sort")
+   
