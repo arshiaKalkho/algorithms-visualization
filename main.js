@@ -1,27 +1,19 @@
 class Helper{//DOM helper
     static async addToClassList(list, nthChild,classToAdd){
-            // let target = document.getElementById(targetElId)
-            // let children = target.childNodes[nthChild]
-            // children.classList.add(classToAdd)
             list.item(nthChild).classList.add(classToAdd)
- 
     }
     static async removeFromClassList(list, nthChild, classToRemove){
-        //document.getElementById(targetElId).childNodes[nthChild].classList.remove(classToRemove)
         list.item(nthChild).classList.remove(classToRemove)
     }
     static async isGreater(a, b){   
-
         if(a.style.height > b.style.height)
             return true     
         return false
     }
     static async swap(a, b){
-        
         let temp = a.style.height
         a.style.height = b.style.height;
         b.style.height = temp 
-        
     }
     static async checkSort(nodeList){
         for(let i =0; i < nodeList.length-1;i++){
@@ -575,7 +567,7 @@ class Helper{//DOM helper
         let targetDiv = document.querySelector(".visualize-sort");
         displayArrayToTarget(visualArr, targetDiv)
     })
-    document.querySelector("#vis-calculate-btn").addEventListener('click', (e)=>{
+    document.querySelector("#vis-calculate-btn").addEventListener('click', (e)=>{//sort with chosen method
         e.preventDefault()
         visualBubbleSort(visualArr.length-1, "visualize-sort")
 
