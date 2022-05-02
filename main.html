@@ -205,6 +205,26 @@
             transition: 200ms ease-in-out;
         }
         
+        #speed{
+            direction: rtl;
+            display: block;
+
+        }
+        #speed::after{
+            content: "-";
+            display: block;
+            transform: translateX(-20px);
+            color: white;
+            font-size: larger;
+        }
+        #speed::before{
+            content: "+";
+            display: block;
+            transform: translateX(20px);
+            color: white;
+            font-size: larger;
+        }
+        
         .red{
             background-color: red;
         }
@@ -230,7 +250,7 @@
             <input type="number" id="size" name="size" min="1" max="100000" value="1000"><br>
             
             Max element size(max 1000,000):
-            <input type="number" id="max" name="max" min="1" max="100000" value="10000"><br>
+            <input type="number" id="max" name="max" min="0" max="100000" value="10000"><br>
             
             is sorted:
             <input type="checkbox" id="sorted" name="sorted" value="true">
@@ -277,11 +297,15 @@
     <form  class="visual-sort-form">
         <h2 class="visualize-sort-header">visualize sorting algorithms with 100 random elements</h2>
         <select name="options" id="vis-alg-options" class="alg-options">
-            <option value="Bubble-sort">Bubble Sort</option>
-
+            <option value="Bubble-Sort">Bubble Sort</option>
+            <option value="Selection-Sort">Selection Sort</option>
+            
         </select>
+        <input type="range" id="speed" min="1" max="200">
+        <label for="speed">speed</label>
     </div>
     <button type="submit" id="vis-calculate-btn">Sort</button>
+    
     <button id="vis-reset-result">Reset</button>
     </form>
     <div class="visualize-sort" id="visualize-sort"></div>

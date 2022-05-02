@@ -164,28 +164,74 @@ class Helper{//DOM helper
         
         
         
-        for(let i = 0; i < size; i++){// 1 n n 
-            for(let j = 0; j < size - i; j++){//n 4n^2
+        for(let i = 0; i < size -1; i++){// 1 n n 
+            for(let j = 0; j < size - i - 1; j++){//n 4n^2
                 
                 await Helper.addToClassList(targetDiv,j,'red')
                 await Helper.addToClassList(targetDiv,j+1,'blue')
                 if(await Helper.isGreater(targetDiv[j],targetDiv[j+1]))//2n^2
                 {      
-                    await sleep(10)
+                    await sleep(speed)
                     await Helper.swap(targetDiv[j+1],targetDiv[j])                   
                 }
                     
                 await Helper.removeFromClassList(targetDiv,j, "red")
                 await Helper.removeFromClassList(targetDiv,j+1,'blue')
-                }     
+            }     
         }
         Helper.checkSort(targetDiv)
     }
     
     
     
+    //bubble sort
+    const bubbleSortSwapHelper = function(arr,a,b){
+        let temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
+    const bubbleSort = function(arr, size){//O(n^2)
+        for(let i = 0; i < size; i++){// 1 n n 
+            for(let j = 0; j < size - i - 1; j++){//n 4n^2
+                if(arr[j] > arr[j+1])//2n^2
+                    bubbleSortSwapHelper(arr, j,j+1)//5n^2
+            }
+        }
+        return arr;
+    }
+
+    //O(n) = 1 + 2n + n + 4n^2 + 2n^2 + 5n^2
+   //O(n) = 11n^2 + 3n + 1
+   //O(n) = N^2
     
     
+    
+    
+    // visual selection sort
+    
+    
+    const visualSelectionSort = async function(size , targetDivId){//O(n^2)
+        let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
+
+        let minIndx;
+        
+        for(let i = 0; i < size - 1; i++){
+            minIndx = i
+            for(let j = i; j < size; j++ ){
+                await Helper.addToClassList(targetDiv,j,'red')
+                
+                await sleep(speed)
+                await Helper.removeFromClassList(targetDiv,j, "red")
+                
+                if(targetDiv[j].style.height < targetDiv[minIndx].style.height)
+                minIndx = j;
+            }
+            //swap minIndx and i
+            await Helper.swap(targetDiv[minIndx],targetDiv[i])
+            
+        }
+        Helper.checkSort(targetDiv)    
+    }
     //selection sort
     const selectionSortSwapHelper = function(arr,x,y){
         
@@ -210,27 +256,6 @@ class Helper{//DOM helper
         return arr;
     }
     
-    
-    
-    //bubble sort
-    const bubbleSortSwapHelper = function(arr,a,b){
-        let temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
-    }
-    const bubbleSort = function(arr, size){//O(n^2)
-        for(let i = 0; i < size; i++){// 1 n n 
-            for(let j = 0; j < size - i - 1; j++){//n 4n^2
-                if(arr[j] > arr[j+1])//2n^2
-                    bubbleSortSwapHelper(arr, j,j+1)//5n^2
-            }
-        }
-        return arr;
-    }
-
-    //O(n) = 1 + 2n + n + 4n^2 + 2n^2 + 5n^2
-   //O(n) = 11n^2 + 3n + 1
-   //O(n) = N^2
     //insertion sort
     const insertionSort = function(arr, size){//O(n^2)
         let key, j;
@@ -555,6 +580,7 @@ class Helper{//DOM helper
     
     
     //visualizeBubbleSort
+    let speed = 100;//5 - 200 value is reversed 200 is slower
     let visualArr = makeVisualizedArray(100,1000,false,false)
     let targetDiv = document.querySelector("#visualize-sort");
     displayArrayToTarget(visualArr, targetDiv)
@@ -569,7 +595,21 @@ class Helper{//DOM helper
     })
     document.querySelector("#vis-calculate-btn").addEventListener('click', (e)=>{//sort with chosen method
         e.preventDefault()
-        visualBubbleSort(visualArr.length-1, "visualize-sort")
+        let algorithm = document.querySelector("#vis-alg-options").value
+        switch(algorithm){
+            case "Bubble-Sort":{
+                visualBubbleSort(visualArr.length, "visualize-sort")
+                break;
+            }
+            case "Selection-Sort":{
+                visualSelectionSort(visualArr.length, "visualize-sort")
+            }
+        }
 
     })
+    
+    document.querySelector("#speed").addEventListener("change",(e)=>{
+        speed = e.target.value
+    })
+
    
