@@ -16,16 +16,23 @@ class Helper{//DOM helper
         b.style.height = temp 
     }
     static async checkSort(nodeList){
+        let hasErr = false
         for(let i =0; i < nodeList.length-1;i++){
             nodeList[i].classList.add("green")
             await sleep(10)
-            if(nodeList[i].style.height > nodeList[i+1].style.height)
+            if(nodeList[i].style.height > nodeList[i+1].style.height){
                 nodeList[i].classList.remove("green")
+                hasErr = true;
                 nodeList[i].classList.add("red")
                 nodeList[i+1].classList.add("red")
+                }
         }
-                nodeList[nodeList.length-1].classList.remove("red")
-                nodeList[nodeList.length-1].classList.add("green")
+        if(hasErr){
+            sendError("visual-sort-form", "something went wrong with the algorithm, try refreshing the page")
+        }else{
+            nodeList[nodeList.length-1].classList.remove("red")
+            nodeList[nodeList.length-1].classList.add("green")
+        }
     }
 }
 
@@ -215,19 +222,24 @@ class Helper{//DOM helper
 
         let minIndx;
         
-        for(let i = 0; i < size - 1; i++){
+        for(let i = 0; i < size-1; i++){
             minIndx = i
-            for(let j = i; j < size; j++ ){
-                await Helper.addToClassList(targetDiv,j,'red')
+            for(let j = i; j < size ; j++ ){
                 
+                await Helper.addToClassList(targetDiv,j,'red')
                 await sleep(speed)
                 await Helper.removeFromClassList(targetDiv,j, "red")
                 
-                if(targetDiv[j].style.height < targetDiv[minIndx].style.height)
-                minIndx = j;
+                if(await Helper.isGreater(targetDiv[minIndx], targetDiv[j])){
+                    await Helper.removeFromClassList(targetDiv,minIndx,"blue")
+                    minIndx = j;
+                    await Helper.addToClassList(targetDiv,minIndx,"blue")
+                }
+                
             }
-            //swap minIndx and i
+            await Helper.removeFromClassList(targetDiv,minIndx,"blue")
             await Helper.swap(targetDiv[minIndx],targetDiv[i])
+            await Helper.addToClassList(targetDiv,i,"yellow")
             
         }
         Helper.checkSort(targetDiv)    
@@ -239,6 +251,7 @@ class Helper{//DOM helper
         arr[x] = arr[y];
         arr[y] = temp;
     }
+    
     const selectionSort = function(origArr , size){//O(n^2)
         let arr = origArr; 
         let minIndx;
@@ -256,6 +269,47 @@ class Helper{//DOM helper
         return arr;
     }
     
+    
+    //visual insertion sort
+    const visualInsertionSort =async function( size, targetDivId){//O(n^2)
+        let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
+        let key, j;
+        for(let i = 1; i < size;i++){
+            key = targetDiv[i];
+            j = i-2;
+            
+            
+            await Helper.addToClassList(targetDiv,i,'red')
+            
+            
+            while(j>=0 && await Helper.isGreater(targetDiv[j],key)){
+               
+                targetDiv[j+1].style.height = key.style.height
+                await Helper.addToClassList(targetDiv,j+1,'blue')
+                await sleep(speed)
+                await Helper.swap(targetDiv[j],targetDiv[j+1])
+                await Helper.removeFromClassList(targetDiv,j+1,'blue')
+                j--;
+            }
+            
+            await Helper.swap(targetDiv[j+1], key)
+            await Helper.removeFromClassList(targetDiv,i,'red')
+            
+            
+            if(i === size - 1){//dealing with the last element
+                j = i;
+                while(j>=0 && await Helper.isGreater(targetDiv[j-1],targetDiv[j])){
+
+                    await Helper.addToClassList(targetDiv,j,'blue')
+                    await sleep(speed)
+                    await Helper.swap(targetDiv[j],targetDiv[j-1])
+                    await Helper.removeFromClassList(targetDiv,j,'blue')
+                    j--;
+                }
+            }
+        }
+        Helper.checkSort(targetDiv)
+    }
     //insertion sort
     const insertionSort = function(arr, size){//O(n^2)
         let key, j;
@@ -272,6 +326,7 @@ class Helper{//DOM helper
         }
         
     }
+  
     
 
 
@@ -371,26 +426,30 @@ class Helper{//DOM helper
 
 
 
-    const sendError = function(text){
-        let form = document.querySelector("#calculate")
+    const sendError = function(targetDivId,text){
+        let form = document.querySelector(`#${targetDivId}`)
         let err = document.createElement('p')
         err.classList.add("error")
         err.innerText = text
         form.appendChild(err)
     }
 
-    const sendWarning = function(text){
-        let form = document.querySelector("#calculate")
+    const sendWarning = function(targetDivId,text){
+        let form = document.querySelector(`#${targetDivId}`)
         let warn = document.createElement('p')
         warn.classList.add("warning")
         warn.innerText = text
         form.appendChild(warn)
     }
     const removeErrAndWarn = function(){
-        let oldErr = document.querySelector(".error") 
-        oldErr?.remove();
-        let oldWarn = document.querySelector(".warning") 
-        oldWarn?.remove();
+        let oldErr = document.querySelectorAll(".error")
+        oldErr.forEach(e=>{
+            e?.remove();
+        })
+        let oldWarn = document.querySelectorAll(".warning") 
+        oldWarn.forEach(e=>{
+            e?.remove();
+        })
     }
 
 
@@ -444,7 +503,7 @@ class Helper{//DOM helper
         let sorted = document.querySelector("#sorted").checked;
         let searchTarget = parseInt(document.querySelector("#search-target").value)
         if(tempArr.length === 0){
-           sendError("array is empty")
+           sendError("calculate","array is empty")
             return
         }
 
@@ -452,7 +511,7 @@ class Helper{//DOM helper
         switch(algorithm){
             case "Binary-Search":{
                 if(!sorted){//if not sorted binary search won't work
-                    sendWarning("Binary search requires sorted array")
+                    sendWarning("calculate","Binary search requires sorted array")
                 }
                 let startTime = performance.now();
                 let result = binarySearch(tempArr,searchTarget)
@@ -490,7 +549,7 @@ class Helper{//DOM helper
             }
             case "Selection-Sort":{
                 if(sorted){
-                    sendWarning("sorting a sorted array")
+                    sendWarning("calculate","sorting a sorted array")
                 }
 
                 let startTime = performance.now();
@@ -506,7 +565,7 @@ class Helper{//DOM helper
             }
             case "Insertion-Sort":{
                 if(sorted){
-                    sendWarning("sorting a sorted array")
+                    sendWarning("calculate","sorting a sorted array")
                 }
 
                 let startTime = performance.now();
@@ -522,7 +581,7 @@ class Helper{//DOM helper
             }
             case "Bubble-Sort":{
                 if(sorted){
-                    sendWarning("sorting a sorted array")
+                    sendWarning("calculate","sorting a sorted array")
                 }
                 let startTime = performance.now();
                 bubbleSort(tempArr,tempArr.length -1 )
@@ -539,7 +598,7 @@ class Helper{//DOM helper
             case "Quick-Sort":{
                 
                 if(sorted){
-                    sendWarning("sorting a sorted array")
+                    sendWarning("calculate","sorting a sorted array")
                 }
                 let startTime = performance.now();
                 quickSort(tempArr, 0 ,tempArr.length -1 )
@@ -550,7 +609,7 @@ class Helper{//DOM helper
                 let fullResult = document.createElement('p')
                 fullResult.innerText =  ` """Actuall""" Array sorted using Quick Sort, time elapsed: ${resultTime}ms`
                 targetDiv.appendChild(fullResult)
-                sendWarning("to avoid stack depth exceeding err, the actual array is sorted now please create a new one")
+                sendWarning("calculate","to avoid stack depth exceeding err, the actual array is sorted now please create a new one")
                 break;
             }
             
@@ -589,12 +648,14 @@ class Helper{//DOM helper
 
     document.querySelector("#vis-reset-result").addEventListener('click', (e)=>{//reset visual array
         e.preventDefault()
+        removeErrAndWarn()
         visualArr = makeVisualizedArray(100,1000,false,false)
         let targetDiv = document.querySelector(".visualize-sort");
         displayArrayToTarget(visualArr, targetDiv)
     })
     document.querySelector("#vis-calculate-btn").addEventListener('click', (e)=>{//sort with chosen method
         e.preventDefault()
+        removeErrAndWarn()
         let algorithm = document.querySelector("#vis-alg-options").value
         switch(algorithm){
             case "Bubble-Sort":{
@@ -603,6 +664,11 @@ class Helper{//DOM helper
             }
             case "Selection-Sort":{
                 visualSelectionSort(visualArr.length, "visualize-sort")
+                break;
+            }
+            case "Insertion-Sort":{
+                visualInsertionSort(visualArr.length, "visualize-sort")
+                break;
             }
         }
 
