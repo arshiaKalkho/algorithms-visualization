@@ -11,6 +11,7 @@
             font-family: 'Roboto', sans-serif;
             color: white;
         }
+        
         input, select, option{
             color: black;
         }
@@ -31,8 +32,13 @@
         }
         body{
             overflow-x: hidden;
-            width: 90%;
-            padding: 1rem;
+            
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 5rem;
             margin: 0;
             background-color: rgb(59, 59, 67);
         }
@@ -141,7 +147,8 @@
             border: 1px solid rgb(214, 214, 214);
         }
         .visualize-sort{
-            width: 100%;
+            max-width: 100%;
+            width: fit-content;
             height: 10rem;
             border: 1px solid rgb(214, 214, 214);
             border-radius: 5px;
@@ -157,9 +164,10 @@
         }
         .visual-array-elements{
             
-            border: 0 0 0 1px solid black;
+            
             width: fill;
             background-color: white;
+            
         }
         .visual-sort-form{
             margin-top: 1rem;
@@ -300,7 +308,8 @@
         <select name="options" id="vis-alg-options" class="alg-options">
             <option value="Bubble-Sort">Bubble Sort</option>
             <option value="Selection-Sort">Selection Sort</option>
-            <option selected= "selected"value="Insertion-Sort">Insertion Sort</option>
+            <option value="Insertion-Sort">Insertion Sort</option>
+            <option selected= "selected"value="Quick-Sort">Quick Sort</option>
             
         </select>
         <input type="range" id="speed" min="1" max="200">

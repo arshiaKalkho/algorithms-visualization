@@ -327,8 +327,76 @@ class Helper{//DOM helper
         
     }
   
-    
 
+    //visualize 
+    
+    const VisualQucikSortPartitionHelper = async function(targetDivId, low, high){
+        let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
+
+        let pivot = targetDiv[high]
+        let i = low - 1;
+        Helper.addToClassList(targetDiv,low,"yellow")
+        Helper.addToClassList(targetDiv,high,"red")
+        for(let j = low; j <= high -1; j++){
+            if( await Helper.isGreater(pivot,targetDiv[j])){
+                i++;
+                Helper.addToClassList(targetDiv,j,"red")
+                Helper.addToClassList(targetDiv,i,"green")
+                await sleep(speed)
+                Helper.removeFromClassList(targetDiv,j,"red")
+                Helper.removeFromClassList(targetDiv,i,"green")
+                Helper.swap(targetDiv[i],targetDiv[j])
+            }
+        }
+        
+        await sleep(speed)
+        Helper.removeFromClassList(targetDiv,low,"yellow")
+        Helper.removeFromClassList(targetDiv,high,"red")
+        Helper.swap(targetDiv[i+1],targetDiv[high])
+        return i+1;
+    }
+    const visualQuickSort = async function(low, high,targetDivId){
+        let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
+        await sleep(speed)
+        
+        if(low < high){
+            let pi =await VisualQucikSortPartitionHelper(targetDivId, low, high);   
+            visualQuickSort(low, pi -1,targetDivId);
+            visualQuickSort(pi+1, high,targetDivId);
+        }
+    }
+    
+//qucik sort
+    const qucikSortSwapHelper = function(arr,x,y){
+        
+        let temp = arr[x]
+        arr[x] = arr[y];
+        arr[y] = temp;
+    }
+    const qucikSortPartitionHelper = function(arr, low, high){
+        let pivot = arr[high]
+        let i = low - 1;
+
+        for(let j = low; j <= high -1; j++){
+            if(arr[j] < pivot){
+                i++;
+                qucikSortSwapHelper(arr,i,j)
+            }
+        }
+        qucikSortSwapHelper(arr, i+1,high);
+        return i+1;
+    }
+    //use a random(last in this case) element as pivot and arrange everything smaller on
+    //side and bigger on the other, keep changing pivot until list is sorted
+    const quickSort = function(arr, low, high){
+        
+        if(low < high){
+            let pi = qucikSortPartitionHelper(arr, low, high);
+            quickSort(arr, low, pi -1);
+            quickSort(arr, pi+1, high);
+        }
+        
+    }
 
 
 
@@ -391,37 +459,7 @@ class Helper{//DOM helper
         merge(arr,left,middle,right)
     }
     
-    //qucik sort
-    const qucikSortSwapHelper = function(arr,x,y){
-        
-        let temp = arr[x]
-        arr[x] = arr[y];
-        arr[y] = temp;
-    }
-    const qucikSortPartitionHelper = function(arr, low, high){
-        let pivot = arr[high]
-        let i = low - 1;
-
-        for(let j = low; j <= high -1; j++){
-            if(arr[j] < pivot){
-                i++;
-                qucikSortSwapHelper(arr,i,j)
-            }
-        }
-        qucikSortSwapHelper(arr, i+1,high);
-        return i+1;
-    }
-    //use a random(last in this case) element as pivot and arrange everything smaller on
-    //side and bigger on the other, keep changing pivot until list is sorted
-    const quickSort = function(arr, low, high){
-        
-        if(low < high){
-            let pi = qucikSortPartitionHelper(arr, low, high);
-            quickSort(arr, low, pi -1);
-            quickSort(arr, pi+1, high);
-        }
-        
-    }
+    
 
 
 
@@ -653,7 +691,7 @@ class Helper{//DOM helper
         let targetDiv = document.querySelector(".visualize-sort");
         displayArrayToTarget(visualArr, targetDiv)
     })
-    document.querySelector("#vis-calculate-btn").addEventListener('click', (e)=>{//sort with chosen method
+    document.querySelector("#vis-calculate-btn").addEventListener('click',async (e)=>{//sort with chosen method
         e.preventDefault()
         removeErrAndWarn()
         let algorithm = document.querySelector("#vis-alg-options").value
@@ -668,6 +706,11 @@ class Helper{//DOM helper
             }
             case "Insertion-Sort":{
                 visualInsertionSort(visualArr.length, "visualize-sort")
+                break;
+            }
+            case "Quick-Sort":{
+                visualQuickSort( 0,visualArr.length-1, "visualize-sort")
+                
                 break;
             }
         }
