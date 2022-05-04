@@ -335,28 +335,27 @@ class Helper{//DOM helper
 
         let pivot = targetDiv[high]
         let i = low - 1;
-        Helper.addToClassList(targetDiv,low,"yellow")
+        Helper.addToClassList(targetDiv,low,"blue")
         Helper.addToClassList(targetDiv,high,"red")
         for(let j = low; j <= high -1; j++){
             if( await Helper.isGreater(pivot,targetDiv[j])){
                 i++;
-                Helper.addToClassList(targetDiv,j,"red")
-                Helper.addToClassList(targetDiv,i,"green")
+                Helper.addToClassList(targetDiv,j,"yellow")
+                Helper.addToClassList(targetDiv,i,"yellow")
                 await sleep(speed)
-                Helper.removeFromClassList(targetDiv,j,"red")
-                Helper.removeFromClassList(targetDiv,i,"green")
+                Helper.removeFromClassList(targetDiv,j,"yellow")
+                Helper.removeFromClassList(targetDiv,i,"yellow")
                 Helper.swap(targetDiv[i],targetDiv[j])
             }
         }
         
         await sleep(speed)
-        Helper.removeFromClassList(targetDiv,low,"yellow")
+        Helper.removeFromClassList(targetDiv,low,"blue")
         Helper.removeFromClassList(targetDiv,high,"red")
         Helper.swap(targetDiv[i+1],targetDiv[high])
         return i+1;
     }
     const visualQuickSort = async function(low, high,targetDivId){
-        let targetDiv = document.querySelectorAll(`#${targetDivId}>div`)
         await sleep(speed)
         
         if(low < high){
@@ -680,6 +679,7 @@ class Helper{//DOM helper
     let speed = 100;//5 - 200 value is reversed 200 is slower
     let visualArr = makeVisualizedArray(100,1000,false,false)
     let targetDiv = document.querySelector("#visualize-sort");
+    
     displayArrayToTarget(visualArr, targetDiv)
    
 
@@ -691,8 +691,12 @@ class Helper{//DOM helper
         let targetDiv = document.querySelector(".visualize-sort");
         displayArrayToTarget(visualArr, targetDiv)
     })
-    document.querySelector("#vis-calculate-btn").addEventListener('click',async (e)=>{//sort with chosen method
+    
+    document.querySelector("#vis-calculate-btn").addEventListener('click',(e)=>{//sort with chosen method
         e.preventDefault()
+        isSortFinished = false;
+        document.getElementById('vis-calculate-btn').disabled  = true;
+        
         removeErrAndWarn()
         let algorithm = document.querySelector("#vis-alg-options").value
         switch(algorithm){
@@ -710,15 +714,17 @@ class Helper{//DOM helper
             }
             case "Quick-Sort":{
                 visualQuickSort( 0,visualArr.length-1, "visualize-sort")
-                
                 break;
             }
         }
-
+       
+       
+        document.getElementById('vis-calculate-btn').disabled  = false;
+        
     })
     
     document.querySelector("#speed").addEventListener("change",(e)=>{
         speed = e.target.value
     })
 
-   
+    
